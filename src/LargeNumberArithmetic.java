@@ -54,25 +54,24 @@ public class LargeNumberArithmetic {
         return result;
     }
 
-    public List<Integer> multiply(List<Integer> num1, List<Integer> num2) {
+    public List<Integer> multiply(List<Integer> num1, int num2) {
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < num1.size() + num2.size(); i++) {
-            result.add(0);
+        int carry = 0;
+        int i = num1.size() - 1;
+
+        while (i >= 0 || carry > 0) {
+            int digit1 = (i >= 0) ? num1.get(i) : 0;
+
+            int prod = digit1 * num2 + carry;
+            result.add(prod % 10);
+            carry = prod / 10;
+
+            i--;
         }
 
-        for (int i = num1.size() - 1; i >= 0; i--) {
-            for (int j = num2.size() - 1; j >= 0; j--) {
-                int product = num1.get(i) * num2.get(j) + result.get(i + j + 1);
-                result.set(i + j + 1, product % 10);
-                result.set(i + j, result.get(i + j) + product / 10);
-            }
-        }
-
-        while (result.size() > 1 && result.get(0) == 0) {
-            result.remove(0);
-        }
-
+        java.util.Collections.reverse(result);
         return result;
+
     }
 
     public List<Integer> divide(List<Integer> num, int divisor) {
